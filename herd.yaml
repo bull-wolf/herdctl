@@ -1,0 +1,26 @@
+# herdctl configuration file
+version: "1"
+
+services:
+  api:
+    command: go run ./cmd/api
+    dir: ./services/api
+    env:
+      PORT: "8080"
+      DB_URL: postgres://localhost:5432/dev
+    depends_on:
+      - db
+
+  worker:
+    command: go run ./cmd/worker
+    dir: ./services/worker
+    env:
+      QUEUE_URL: redis://localhost:6379
+    depends_on:
+      - redis
+
+  db:
+    command: docker run --rm -p 5432:5432 -e POSTGRES_PASSWORD=dev postgres:15
+
+  redis:
+    command: docker run --rm -p 6379:6379 redis:7
