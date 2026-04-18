@@ -45,6 +45,9 @@ herdctl down
 # View aggregated logs
 herdctl logs
 
+# Follow logs for a specific service
+herdctl logs api --follow
+
 # Check service status
 herdctl status
 ```
@@ -60,6 +63,13 @@ herdctl status
 | `logs [service]` | Tail logs for all or one service |
 | `status` | Show current state of all services |
 | `restart [service]` | Restart all or a specific service |
+
+### Flags
+
+| Flag | Command | Description |
+|---|---|---|
+| `--follow`, `-f` | `logs` | Stream logs continuously |
+| `--timeout`, `-t` | `down`, `restart` | Seconds to wait before force-killing (default: 10) |
 
 ---
 
