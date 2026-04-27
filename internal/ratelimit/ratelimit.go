@@ -14,6 +14,14 @@ type Entry struct {
 	Limit     int
 }
 
+// Remaining returns the number of requests still allowed in the current window.
+func (e *Entry) Remaining() int {
+	if e.Requests >= e.Limit {
+		return 0
+	}
+	return e.Limit - e.Requests
+}
+
 // Limiter enforces per-service request rate limits over a sliding window.
 type Limiter struct {
 	mu      sync.Mutex
