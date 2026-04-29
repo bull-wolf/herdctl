@@ -27,6 +27,9 @@ func TestSet_InvalidArgs(t *testing.T) {
 	if err := m.Set("api", KindCPU, -1.0); err == nil {
 		t.Error("expected error for non-positive limit")
 	}
+	if err := m.Set("api", KindCPU, 0.0); err == nil {
+		t.Error("expected error for zero limit")
+	}
 }
 
 func TestRecord_UnderLimit(t *testing.T) {
@@ -58,6 +61,17 @@ func TestRecord_NoQuota(t *testing.T) {
 	m := New()
 	if err := m.Record("ghost", KindCPU, 1.0); err == nil {
 		t.Error("expected error for unknown service")
+	}
+}
+
+func TestRecord_InvalidAmount(t *testing.T) {
+	m := New()
+	_ = m.Set("api", KindCPU, 4.0)
+	if err := m.Record("api", KindCPU, 0.0); err == nil {
+		t.Error("expected error for zero amount")
+	}
+	if err := m.Record("api", KindCPU, -1.0); err == nil {
+		t.Error("expected error for negative amount")
 	}
 }
 
