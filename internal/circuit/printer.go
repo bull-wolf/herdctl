@@ -25,3 +25,19 @@ func Print(w io.Writer, entries []Entry) {
 	}
 	tw.Flush()
 }
+
+// PrintFiltered writes a formatted table of circuit breaker entries filtered
+// by the given state to w. If state is empty, all entries are printed.
+func PrintFiltered(w io.Writer, entries []Entry, state State) {
+	if state == "" {
+		Print(w, entries)
+		return
+	}
+	filtered := make([]Entry, 0, len(entries))
+	for _, e := range entries {
+		if e.State == state {
+			filtered = append(filtered, e)
+		}
+	}
+	Print(w, filtered)
+}
