@@ -70,3 +70,21 @@ func TestAll_ReturnsAll(t *testing.T) {
 		t.Errorf("expected 3 entries, got %d", len(all))
 	}
 }
+
+func TestAll_Empty(t *testing.T) {
+	s := New()
+	all := s.All()
+	if len(all) != 0 {
+		t.Errorf("expected 0 entries on new store, got %d", len(all))
+	}
+}
+
+func TestClear_NonExistent(t *testing.T) {
+	// Clearing a service that was never added should not panic or error.
+	s := New()
+	s.Clear("nonexistent")
+	_, ok := s.Get("nonexistent")
+	if ok {
+		t.Fatal("expected entry to remain absent after clearing nonexistent service")
+	}
+}
